@@ -17,7 +17,7 @@
 - BEQ
 - J
   
-除`CPU`本体外，还包含一个累加器测试程序，它能会从拨动开关中读取数据并累加，然后将结果送至七段数码管显示。
+除`CPU`本身外，还包含一个累加器测试程序(具体代码见`test.txt`文件)，它能会从拨动开关中读取数据并累加，然后将结果送至七段数码管显示。
 
 ## 源码结构
 
@@ -41,7 +41,7 @@ CPU数据通路示意图：
 
 ![Data_Path](/pictures/Data_Path.PNG)
 
-各模块间组合图：
+模块组合图：
 
 ![Modules](/pictures/Modules.PNG)
 
@@ -51,7 +51,9 @@ CPU数据通路示意图：
 - 在`Vivado`中导入代码前，需要例化两个`IP`核：
   - `distributed memory`, `ROM`, `Depth=256`, `Data Width=32`, `Component Name=dis_mem_gen_0`;
   - `distributed memory`, `Singal Port RAM`, `Depth=256`, `Data Width=32`, `Component Name=dis_mem_gen_1`;
-- 由于正式上板测试需要信号消抖以及连接七段数码管，这将妨碍仿真，所以`ButtonEdge`模块以及`DebugUnit`模块中各包含两端代码，分别用于仿真和上板测试，请按需选择.
+- 由于正式上板测试需要信号消抖以及连接七段数码管，这将妨碍仿真，所以`ButtonEdge`模块以及`DebugUnit`模块中各包含两段代码，分别用于仿真和上板测试，请按需选择;
+- 与现代处理器以**字节**为地址单位不同，本项目是以**字**作为地址单位，即`32bits`一个地址，所以在`CPU`数据通路中没有左移对齐模块，`PC`也是`+1`而不是`+4`;
+- 在本项目中，`CPU`需要与拨动开关`switch`这一外设交互，定义虚拟内存地址`x8000`为开关数据寄存器，`x8001`为开关状态寄存器;
 
 ## 输入输出信号声明
 
@@ -67,4 +69,4 @@ CPU数据通路示意图：
 
 E-Mail: cyq0919@mail.ustc.edu.cn
 
-**版权归作者本人所有，请勿随意转发！**
+**仅供学术参考，请勿将代码直接copy为个人所用**
