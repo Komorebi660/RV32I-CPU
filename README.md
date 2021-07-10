@@ -51,7 +51,7 @@ CPU数据通路示意图：
 - 在`Vivado`中导入代码前，需要例化两个`IP`核：
   - `distributed memory`, `ROM`, `Depth=256`, `Data Width=32`, `Component Name=dis_mem_gen_0`;
   - `distributed memory`, `Singal Port RAM`, `Depth=256`, `Data Width=32`, `Component Name=dis_mem_gen_1`;
-- 由于正式上板测试需要信号消抖以及连接七段数码管，这将妨碍仿真，所以`ButtonEdge`模块以及`DebugUnit`模块中各包含两段代码，分别用于仿真和上板测试，请按需选择;
+- 由于正式上板测试需要信号消抖以及连接七段数码管，这将妨碍仿真，所以`ButtonEdge`模块以及`DebugUnit`模块中各包含两段代码，分别用于仿真和上板测试，请按需选择,默认代码为仿真使用;
 - 与现代处理器以**字节**为地址单位不同，本项目是以**字**作为地址单位，即`32bits`一个地址，所以在`CPU`数据通路中没有左移对齐模块，`PC`也是`+1`而不是`+4`;
 - 在本项目中，`CPU`需要与拨动开关`switch`这一外设交互，定义虚拟内存地址`x8000`为开关数据寄存器，`x8001`为开关状态寄存器;
 

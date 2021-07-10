@@ -1,4 +1,12 @@
 `timescale 1ns / 1ps
+/* THIS FILE IS PART OF PLC-Design
+*  SwitchRegister.v - a controller of the switches to connect with the CPU
+* 
+*  THIS PROGRAM IS FREE SOFTWARE.
+*  Copyright (c) 2021 Komorebi660 All Rights Reserved 
+* 
+*  E-mail: cyq0919@mail.ustc.edu.cn
+*/
 
 module SwitchRegister(
     input wire [31:0] data,         //input data

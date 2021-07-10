@@ -1,4 +1,12 @@
 `timescale 1ns / 1ps
+/* THIS FILE IS PART OF PLC-Design
+*  ButtonEdge.v - used to eliminate the button jitter and take edge signals
+* 
+*  THIS PROGRAM IS FREE SOFTWARE.
+*  Copyright (c) 2021 Komorebi660 All Rights Reserved 
+* 
+*  E-mail: cyq0919@mail.ustc.edu.cn
+*/
 
 module ButtonEdge(
 	input clk, rst,

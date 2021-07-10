@@ -1,4 +1,12 @@
 `timescale 1ns / 1ps
+/* THIS FILE IS PART OF PLC-Design
+*  DebugUnit.v - used for testing the CPU
+* 
+*  THIS PROGRAM IS FREE SOFTWARE.
+*  Copyright (c) 2021 Komorebi660 All Rights Reserved 
+* 
+*  E-mail: cyq0919@mail.ustc.edu.cn
+*/
 
 /*
 ////  for programming on the development board  ////
