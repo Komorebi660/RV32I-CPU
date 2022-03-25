@@ -1,66 +1,101 @@
-# 简易MIPS五段流水线CPU设计
+# RISC-V 32I CPU
 
-## 实验环境
+## 文件结构
 
-- `Windows`/`Linux`
-- `Vivado 2020.1`
-- 开发板型号 `xc7a100tcsg324-1`
+```
+├─Figures           # 存放数据通路图
+│   Design-Figure.drawio
+│   Design-Figure.png
+│
+├─Simulation        # 存放仿真文件及测试数据
+│   1testAll.data
+│   1testAll.inst
+│   1testAll.txt
+│   2testAll.data
+│   2testAll.inst
+│   2testAll.txt
+│   3testAll.data
+│   3testAll.inst
+│   3testAll.txt
+│   CSRtest.data
+│   CSRtest.inst
+│   CSRtest.txt
+│   testBench.v
+│
+├─Source            # CPU源代码
+│  ├─Cache          # 数据和指令cache
+│  ├─CSR            # CSR有关部件
+│  ├─ExMemSegReg    # 级间寄存器
+│  ├─IdExSegReg
+│  ├─IfIdSegReg
+│  └─MemWbSegReg
+│    ALU.v          
+│    BranchDecision.v
+│    ControllerDecoder.v
+│    DataExtend.v
+│    GeneralRegister.v
+│    Hazard.v
+│    ImmExtend.v
+│    NPCGenerator.v
+│    Parameters.v
+│    PC.v
+│    RV32ICore.v
+│
+└─TestTools         #测试数据生成工具
+    ├─ExampleCode   #示例代码
+    └─Utils         #转换工具
+```
 
-## 项目简介
+## CPU基本情况
 
-本项目实现了基于`MIPS`指令集架构的简易五段流水线`CPU`，它能运行的指令有：
+本仓库实现了一个基于`RISC-V 32I`指令集的五段流水线`CPU`, 支持的指令有:
 
-- ADD
-- ADDI
-- SW
-- LW
-- BEQ
-- J
+```
+SLLI、SRLI、SRAI、ADD、SUB、SLL、SLT、SLTU、XOR、SRL、SRA、OR、AND、ADDI、SLTI、SLTIU、XORI、ORI、ANDI、
+
+LUI、AUIPC、JALR、JAL、
+
+LB、LH、LW、LBU、LHU、
+
+SB、SH、SW、
+
+BEQ、BNE、BLT、BLTU、BGE、BGEU、
+
+CSRRW、CSRRS、CSRRC、CSRRWI、CSRRSI、CSRRCI
+```
+
+`RISC-V 32I`的指令类型定义如下:
+
+<div align=center>
+<img src="./Figures/instruction_type.png" width=60%/>
+</div>
+</br>
+
+`CPU`的[数据通路](./Figures/Design-Figure.png)如下:
+
+<div align=center>
+<img src="./Figures/Design-Figure.png" width=100%/>
+</div>
+</br>
+
+## 仿真
+
+以`Vivado`开发为例, 新建工程, 将[Source](./Source)的代码导入, Simulation文件夹下的[testBench.v](./Simulation/testBench.v)作为仿真文件导入, 并将`testBench.v`设置为Simulation的Top文件。之后直接进行仿真即可, 仿真文件会自动将`.inst`和`.data`的文件加载进`Instruction Cache`和`Data Cache`, 并开始执行。
+
+示例如下图所示:
+
+<div align=center>
+<img src="./Figures/simulation.png" width=100%/>
+</div>
+</br>
+
+`testBench.v`定义的四个宏：
+
+- **DataCacheContentLoadPath**: `Data Cache`的写入文件路径
+- **InstCacheContentLoadPath**: `Instruction Cache`的写入文件路径
+- **DataCacheContentSavePath**: `Data Cache`导出内容的存放路径
+- **InstCacheContentSavePath**: `Instruction Cache`导出内容的存放路径
   
-除`CPU`本身外，还包含一个累加器测试程序(具体代码见`test.txt`文件)，它能会从拨动开关中读取数据并累加，然后将结果送至七段数码管显示。
+请根据需要自行修改。
 
-## 源码结构
-
-- constrs
-  - `CPU_test.xdc`约束文件;
-- simulation
-  - `debug_test.v`仿真文件;
-- source
-  - `ALU.v`逻辑算数运算器模块，实现加法以及比较，可自行添加更多功能;
-  - `RegisterFile.v`寄存器堆模块;
-  - `CPU.v`五段流水线处理器模块，在其中例化了`ALU`、`RegisterFile`、以及两个`IP`核作为`Instruction Memory`和`Data Memory`;
-  - `ButtonEdge.v`按键信号处理模块，对输入的按键信号去抖动、取边沿;
-  - `DIS.v`七段数码管显示模块，负责将读出的数据在七段数码管上显示;
-  - `SwitchRegister.v`开关寄存器模块，为了实现CPU与外设交互所定义的模块，里面包含数据寄存器以及状态寄存器两个部分;
-  - `DebugUnit.v`作为顶层模块封装上述模块，用于调试;
-- `test.coe`作为测试程序送入`Instruction Memory`内.
-
-## 数据通路
-
-CPU数据通路示意图：
-
-![Data_Path](/pictures/Data_Path.PNG)
-
-模块组合图：
-
-![Modules](/pictures/Modules.PNG)
-
-## 注意事项
-
-- 代码使用`Verilog`编写，利用`Vivado`进行仿真、测试、烧写；
-- 在`Vivado`中导入代码前，需要例化两个`IP`核：
-  - `distributed memory`, `ROM`, `Depth=256`, `Data Width=32`, `Component Name=dis_mem_gen_0`;
-  - `distributed memory`, `Singal Port RAM`, `Depth=256`, `Data Width=32`, `Component Name=dis_mem_gen_1`;
-- 由于正式上板测试需要信号消抖以及连接七段数码管，这将妨碍仿真，所以`ButtonEdge`模块以及`DebugUnit`模块中各包含两段代码，分别用于仿真和上板测试，请按需选择,默认代码为仿真使用;
-- 与现代处理器以**字节**为地址单位不同，本项目是以**字**作为地址单位，即`32bits`一个地址，所以在`CPU`数据通路中没有左移对齐模块，`PC`也是`+1`而不是`+4`;
-- 在本项目中，`CPU`需要与拨动开关`switch`这一外设交互，定义虚拟内存地址`x8000`为开关数据寄存器，`x8001`为开关状态寄存器;
-
-## 输入输出信号声明
-
-- `switch[15:0]`作为累加器的输入数据;
-- `btnc`作为输入数据使能信号;
-- `btnu`/`btnd`用于给要读取的寄存器的地址`+`/`-` 1;
-- `btnl`异步复位信号;
-- `led[4:0]`指示当前七段数码管显示值对应的寄存器的地址;
-- `led[15]`提示可以输入下一个数据;
-- 七段数码管显示所选寄存器地址的值.
+[TestTools](./TestTools/)文件夹内包含`.inst`和`.data`文件转换工具, 使用说明见文件夹内的[README文档](./TestTools/README.md)。
