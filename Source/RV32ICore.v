@@ -23,7 +23,7 @@ module RV32ICore(
     wire [31:0] jal_target, br_target;
     wire jal, br;
     wire jalr_ID, jalr_EX;
-    wire [31:0] NPC, PC_IF, PC_4, PC_ID, PC_EX;
+    wire [31:0] NPC, PC_IF, PC_ID, PC_EX;
     wire [31:0] inst_ID;
     wire reg_write_en_ID, reg_write_en_EX, reg_write_en_MEM, reg_write_en_WB;
     wire [4:0] reg1_src_EX;
@@ -62,14 +62,10 @@ module RV32ICore(
     wire [31:0] ALU_op1_csr, ALU_op1_reg_or_imm;
     wire [31:0] ALU_op2_reg_or_imm;
 
-    
-
-    // Adder to compute PC + 4
-    assign PC_4 = PC_IF + 4;
 
 
-    // Adder to compute PC_ID + Imm - 4
-    assign jal_target = PC_ID + imm - 4;
+    // Adder to compute PC_ID + Imm
+    assign jal_target = PC_ID + imm;
     // MUX for reg1 forwarding
     assign reg1_forwarding =  (op1_sel == 2'b00) ? reg1_EX : 
                                          ((op1_sel == 2'b01) ? result_MEM : data_WB);
@@ -80,7 +76,7 @@ module RV32ICore(
                                              
     
     // MUX for ALU op1                                         
-    assign ALU_op1_reg_or_imm = (op1_src_EX == 1'b0) ? reg1_forwarding : (PC_EX - 4);
+    assign ALU_op1_reg_or_imm = (op1_src_EX == 1'b0) ? reg1_forwarding : PC_EX;
     // ALUop1 CSR Mux
     assign ALU_op1_csr = (CSR_zimm_or_reg_EX == 0) ? reg1_forwarding : CSR_zimm_EX;
     assign ALU_op1 = (CSR_write_en_EX == 0) ? ALU_op1_reg_or_imm : ALU_op1_csr;
@@ -89,11 +85,10 @@ module RV32ICore(
     assign ALU_op2_reg_or_imm = (op2_src_EX == 1'b0) ? reg2_forwarding : imm_EX;
     // ALUop2 CSR Mux
     assign ALU_op2 = (CSR_write_en_EX == 0) ? ALU_op2_reg_or_imm : CSR_data_EX;
-    
 
 
-    // MUX for result (ALU or PC_EX)
-    assign npc_or_aluout = load_npc_EX ? PC_EX : ALU_out;
+    // MUX for result (ALU or NPC)
+    assign npc_or_aluout = load_npc_EX ? (PC_EX + 4) : ALU_out;
     // EX CSR mux
     assign result = (CSR_write_en_EX == 0) ? npc_or_aluout : CSR_data_EX;
     
@@ -106,10 +101,10 @@ module RV32ICore(
 
     //Module connections
     // ---------------------------------------------
-    // PC Generate
+    // PC Generator
     // ---------------------------------------------
     NPC_Generator NPC_Generator1(
-        .PC(PC_4),
+        .PC(PC_IF),
         .jal_target(jal_target),
         .jalr_target(ALU_out),
         .br_target(br_target),
@@ -149,7 +144,7 @@ module RV32ICore(
         .clk(CPU_CLK),
         .bubbleD(bubbleD),
         .flushD(flushD),
-        .PC_IF(PC_4),
+        .PC_IF(PC_IF),
         .PC_ID(PC_ID)
     );
 

@@ -8,19 +8,8 @@
 │   Design-Figure.png
 │
 ├─Simulation        # 存放仿真文件及测试数据
-│   1testAll.data
-│   1testAll.inst
-│   1testAll.txt
-│   2testAll.data
-│   2testAll.inst
-│   2testAll.txt
-│   3testAll.data
-│   3testAll.inst
-│   3testAll.txt
-│   CSRtest.data
-│   CSRtest.inst
-│   CSRtest.txt
-│   testBench.v
+│   ...
+│   testBench.v     # 仿真文件
 │
 ├─Source            # CPU源代码
 │  ├─Cache          # 数据和指令cache
@@ -67,7 +56,7 @@ CSRRW、CSRRS、CSRRC、CSRRWI、CSRRSI、CSRRCI
 `RISC-V 32I`的指令类型定义如下:
 
 <div align=center>
-<img src="./Figures/instruction_type.png" width=60%/>
+<img src="./Figures/instruction_type.png" width=80%/>
 </div>
 </br>
 
@@ -89,7 +78,9 @@ CSRRW、CSRRS、CSRRC、CSRRWI、CSRRSI、CSRRCI
 </div>
 </br>
 
-`testBench.v`定义的四个宏：
+对于测试样例, 若运行正确, 则`gp`为`1`.
+
+`testBench.v`定义了四个宏: 
 
 - **DataCacheContentLoadPath**: `Data Cache`的写入文件路径
 - **InstCacheContentLoadPath**: `Instruction Cache`的写入文件路径

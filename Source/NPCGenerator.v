@@ -30,7 +30,7 @@ module NPC_Generator(
         else if(jal)
             NPC = jal_target;
         else
-            NPC = PC;
+            NPC = PC + 4;
     end
 
 endmodule
