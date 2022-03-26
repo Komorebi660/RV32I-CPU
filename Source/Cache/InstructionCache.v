@@ -11,8 +11,7 @@
 // 输出
     // data              读的指令
     // debug_data        debug读的指令
-// 实验要求  
-    // 无需修改
+    
 
 module InstructionCache(
     input wire clk,

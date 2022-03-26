@@ -6,8 +6,6 @@
     // ImmType           立即数类型
 // 输出
     // imm               补全的立即数
-// 实验要求
-    // 补全模块
 
 
 `include "Parameters.v"

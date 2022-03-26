@@ -8,8 +8,7 @@
     // flushE            EX阶段的flush信号
 // 输出
     // reg1_EX           传给下一流水段的寄存器1内容
-// 实验要求  
-    // 无需修改
+
 
 module Op1_EX(
     input wire clk, bubbleE, flushE,

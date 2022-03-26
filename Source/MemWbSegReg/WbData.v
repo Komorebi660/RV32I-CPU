@@ -17,8 +17,7 @@
 // 输出
     // debug_out_data    Data Cache的debug读出数据
     // data_WB           传给下一流水段的写回寄存器内容
-// 实验要求  
-    // 无需修改
+
 
 module WB_Data_WB(
     input wire clk, bubbleW, flushW,

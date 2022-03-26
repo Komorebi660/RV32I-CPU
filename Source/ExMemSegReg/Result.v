@@ -8,8 +8,7 @@
     // flushM            MEM阶段的flush信号
 // 输出
     // result_MEM       传给下一流水段的目标寄存器地址
-// 实验要求  
-    // 无需修改
+    
 
 module Result_MEM(
     input wire clk, bubbleM, flushM,

@@ -12,8 +12,7 @@
     // br                br == 1时，有br跳转
 // 输出
     // NPC               下一条执行的指令地址
-// 实验要求  
-    // 实现NPC_Generator
+
 
 module NPC_Generator(
     input wire [31:0] PC, jal_target, jalr_target, br_target,

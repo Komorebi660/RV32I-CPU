@@ -1,8 +1,6 @@
 `timescale 1ns / 1ps
 // 功能说明
     // 为了代码可读性，定义了常量值
-// 实验要求  
-    // 无需修改
 
 `ifndef CONST_VALUES
 `define CONST_VALUES

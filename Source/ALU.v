@@ -7,8 +7,7 @@
     // ALU_func          运算类型
 // 输出
     // ALU_out           运算结果
-// 实验要求
-    // 补全模块
+
 
 `include "Parameters.v"   
 module ALU(

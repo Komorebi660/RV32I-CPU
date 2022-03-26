@@ -1,6 +1,20 @@
 `timescale 1ns / 1ps
-// 实验要求
-    // 补全模块（阶段三）
+// 功能说明
+    // ID-EX段CSR控制寄存器
+// 输入
+    // clk                  输入时钟
+    // bubbleE              EX阶段的bubble信号
+    // flushE               EX阶段的flush信号
+    // CSR_addr_ID          ID段的CSR寄存器地址
+    // CSR_zimm_ID          ID段的立即数
+    // CSR_zimm_or_reg_ID   ID段的源操作数选择信号
+    // CSR_write_en_ID      ID段的CSR寄存器写信号
+// 输出
+    // CSR_addr_EX          EX段的CSR寄存器地址
+    // CSR_zimm_EX          EX段的立即数
+    // CSR_zimm_or_reg_EX   EX段的源操作数选择信号
+    // CSR_write_en_EX      EX段的CSR寄存器写信号
+    
 
 module CSR_EX(
     input wire clk, bubbleE, flushE,

@@ -1,6 +1,15 @@
 `timescale 1ns / 1ps
-// 实验要求
-    // 补全模块（阶段三）
+// 功能说明
+    // ID-EX段CSR控制寄存器
+// 输入
+    // clk                  输入时钟
+    // rst
+    // CSR_write_addr       写CSR寄存器地址
+    // CSR_read_addr        读CSR寄存器地址
+    // CSR_data_write       写CSR寄存器数据
+// 输出
+    // CSR_data_read        读CSR寄存器数据
+
 
 module CSR_Regfile(
     input wire clk,

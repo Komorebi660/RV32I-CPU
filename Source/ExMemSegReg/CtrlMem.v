@@ -15,10 +15,6 @@
     // reg_write_en_MEM     传给下一流水段的通用寄存器写使能
     // cache_write_en_MEM   传给下一流水段的按字节写入data cache
 
-// 实验要求  
-    // 无需修改
-
-
 
 module Ctrl_MEM(
     input wire clk, bubbleM, flushM,

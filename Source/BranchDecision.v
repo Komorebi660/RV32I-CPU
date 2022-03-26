@@ -7,8 +7,7 @@
     // br_type            branch类型
 // 输出
     // br                 是否branch
-// 实验要求
-    // 补全模块
+
 
 `include "Parameters.v"   
 module BranchDecision(

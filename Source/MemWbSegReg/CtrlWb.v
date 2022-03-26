@@ -9,8 +9,6 @@
 // 输出
     // reg_write_en_WB      传给下一流水段的通用寄存器写使能
 
-// 实验要求  
-    // 无需修改
 
 module Ctrl_WB(
     input wire clk, bubbleW, flushW,

@@ -7,12 +7,9 @@
     // load_type         load的类型
 // 输出
     // dealt_data        扩展完的数据
-// 实验要求
-    // 补全模块
 
 
 `include "Parameters.v"
-
 module DataExtend(
     input wire [31:0] data,
     input wire [1:0] addr,

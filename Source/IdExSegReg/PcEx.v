@@ -8,8 +8,7 @@
     // flushE            EX阶段的flush信号
 // 输出
     // PC_EX             传给下一流水段的PC地址
-// 实验要求  
-    // 无需修改
+
 
 module PC_EX(
     input wire clk, bubbleE, flushE,

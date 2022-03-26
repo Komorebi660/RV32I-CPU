@@ -6,8 +6,6 @@
     // NPC               NPC_Generator生成的下一条指令地址
 // 输出
     // PC                流水线需要处理的指令地址
-// 实验要求  
-    // 无需修改
 
 
 module PC_IF(

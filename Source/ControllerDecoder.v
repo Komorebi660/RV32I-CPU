@@ -18,8 +18,6 @@
     // imm_type          指令中立即数类型
     // CSR_write_en      是否需要写CSR寄存器
     // CSR_zimm_or_reg   CSR指令的操作数类型, 为0时选择reg, 否则选择zimm
-// 实验要求
-    // 补全模块
 
 
 `include "Parameters.v"   

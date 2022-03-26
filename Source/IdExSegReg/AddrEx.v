@@ -12,8 +12,7 @@
     // reg1_src_EX       传给下一流水段的源寄存器1地址
     // reg2_src_EX       传给下一流水段的源寄存器2地址
     // reg_dest_EX       传给下一流水段的目标寄存器地址
-// 实验要求  
-    // 无需修改
+
 
 module Addr_EX(
     input wire clk, bubbleE, flushE,

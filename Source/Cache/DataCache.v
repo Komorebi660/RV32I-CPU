@@ -13,8 +13,6 @@
 // 输出
     // out_data          输出数据
     // debug_out_data    debug输出数据
-// 实验要求  
-    // 无需修改
 
 
 module DataCache(

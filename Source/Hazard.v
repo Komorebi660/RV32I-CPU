@@ -29,9 +29,7 @@
     // bubbleW           WB阶段的bubble信号
     // op1_sel           00 is reg1, 01 is mem stage forwarding, 01 is wb stage forwarding
     // op2_sel           00 is reg2, 01 is mem stage forwarding, 01 is wb stage forwarding
-
-// 实验要求
-    // 补全模块
+    
 
 `include "Parameters.v"   
 module HarzardUnit(

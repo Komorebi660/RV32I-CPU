@@ -8,8 +8,7 @@
     // flushW            WB阶段的flush信号
 // 输出
     // reg_dest_WB       传给下一流水段的目标寄存器地址
-// 实验要求  
-    // 无需修改
+
 
 module Addr_WB(
     input wire clk, bubbleW, flushW,

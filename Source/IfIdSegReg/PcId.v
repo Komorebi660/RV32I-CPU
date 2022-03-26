@@ -8,8 +8,7 @@
     // flushD            ID阶段的flush信号
 // 输出
     // PC_ID             传给下一段寄存器的PC地址
-// 实验要求  
-    // 无需修改
+
 
 module PC_ID(
     input wire clk, bubbleD, flushD,

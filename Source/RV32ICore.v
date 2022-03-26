@@ -1,8 +1,7 @@
 `timescale 1ns / 1ps
 //功能说明
     // RV32I Core的顶层模块
-//实验要求  
-    // 无需修改
+    
 
 module RV32ICore(
     input wire CPU_CLK,

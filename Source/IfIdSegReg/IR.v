@@ -12,8 +12,6 @@
 // 输出
     // inst_ID           传给下一流水段的指令
     // debug_data        Instruction Cache的debug读出指令
-// 实验要求  
-    // 无需修改
 
 
 module IR_ID(

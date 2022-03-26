@@ -14,8 +14,6 @@
 // 输出
     // reg1              reg1读数据
     // reg2              reg2读数据
-// 实验要求
-    // 无需修改
 
 
 module RegisterFile(

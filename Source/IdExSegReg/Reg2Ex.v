@@ -8,8 +8,6 @@
     // flushE            EX阶段的flush信号
 // 输出
     // reg2_EX           传给下一流水段的寄存器2内容
-// 实验要求  
-    // 无需修改
 
 
 module Reg2_EX(

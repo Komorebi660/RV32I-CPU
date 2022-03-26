@@ -10,8 +10,6 @@
     // flushE            EX阶段的flush信号
 // 输出
     // address_EX        传给下一流水段的跳转地址(Branch)
-// 实验要求  
-    // 无需修改
 
 
 module BR_Target_EX(
