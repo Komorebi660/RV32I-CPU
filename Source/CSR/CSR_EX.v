@@ -1,31 +1,16 @@
+// Copyright (c) 2022 Komorebi660
 `timescale 1ns / 1ps
-// 功能说明
-    // ID-EX段CSR控制寄存器
-// 输入
-    // clk                  输入时钟
-    // bubbleE              EX阶段的bubble信号
-    // flushE               EX阶段的flush信号
-    // CSR_addr_ID          ID段的CSR寄存器地址
-    // CSR_zimm_ID          ID段的立即数
-    // CSR_zimm_or_reg_ID   ID段的源操作数选择信号
-    // CSR_write_en_ID      ID段的CSR寄存器写信号
-// 输出
-    // CSR_addr_EX          EX段的CSR寄存器地址
-    // CSR_zimm_EX          EX段的立即数
-    // CSR_zimm_or_reg_EX   EX段的源操作数选择信号
-    // CSR_write_en_EX      EX段的CSR寄存器写信号
-    
 
 module CSR_EX(
-    input wire clk, bubbleE, flushE,
-    input wire [11:0] CSR_addr_ID,
-    input wire [31:0] CSR_zimm_ID,
-    input wire CSR_zimm_or_reg_ID,
-    input wire CSR_write_en_ID,
-    output reg [11:0] CSR_addr_EX,
-    output reg [31:0] CSR_zimm_EX,
-    output reg CSR_zimm_or_reg_EX,
-    output reg CSR_write_en_EX
+    input wire clk, bubbleE, flushE,    //控制信号
+    input wire [11:0] CSR_addr_ID,      //CSR寄存器在ID段的地址
+    input wire [31:0] CSR_zimm_ID,      //立即数在ID段的值
+    input wire CSR_zimm_or_reg_ID,      //ID段控制信号: 选择立即数还是寄存器的值
+    input wire CSR_write_en_ID,         //ID段控制信号: 是否需要写CSR
+    output reg [11:0] CSR_addr_EX,      //CSR寄存器在EX段的地址
+    output reg [31:0] CSR_zimm_EX,      //立即数在EX段的值
+    output reg CSR_zimm_or_reg_EX,      //EX段控制信号: 选择立即数还是寄存器的值
+    output reg CSR_write_en_EX          //EX段控制信号: 是否需要写CSR
     );
 
     //initial to zero

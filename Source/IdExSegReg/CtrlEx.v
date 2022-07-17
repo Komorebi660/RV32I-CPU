@@ -34,6 +34,7 @@ module Ctrl_EX(
     input wire [2:0] load_type_ID,
     input wire reg_write_en_ID,
     input wire [3:0] cache_write_en_ID,
+    input wire cache_read_en_ID,
     input wire op1_src_ID, op2_src_ID, 
     output reg jalr_EX,
     output reg [3:0] ALU_func_EX,
@@ -43,6 +44,7 @@ module Ctrl_EX(
     output reg [2:0] load_type_EX,
     output reg reg_write_en_EX,
     output reg [3:0] cache_write_en_EX,
+    output reg cache_read_en_EX,
     output reg op1_src_EX, op2_src_EX
     );
 
@@ -56,9 +58,9 @@ module Ctrl_EX(
         load_type_EX = 2'h0;
         reg_write_en_EX = 0;
         cache_write_en_EX = 3'h0;
+        cache_read_en_EX = 1'b0;
         op1_src_EX = 0;
         op2_src_EX = 0;
-        
     end
     
     always@(posedge clk)
@@ -74,6 +76,7 @@ module Ctrl_EX(
                 load_type_EX <= 2'h0;
                 reg_write_en_EX <= 0;
                 cache_write_en_EX <= 3'h0;
+                cache_read_en_EX <= 1'b0;
                 op1_src_EX <= 0;
                 op2_src_EX <= 0;
             end
@@ -87,6 +90,7 @@ module Ctrl_EX(
                 load_type_EX <= load_type_ID;
                 reg_write_en_EX <= reg_write_en_ID;
                 cache_write_en_EX <= cache_write_en_ID;
+                cache_read_en_EX <= cache_read_en_ID;
                 op1_src_EX <= op1_src_ID;
                 op2_src_EX <= op2_src_ID;
             end

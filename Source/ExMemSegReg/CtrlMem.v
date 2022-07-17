@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 //  功能说明
-    // EX\MEM的控制信号段寄存器?
+    // EX\MEM的控制信号段寄存器
 // 输入
     // clk                  时钟信号
     // wb_select_EX         写回寄存器的值的来源（Cache内容或者ALU计算结果）
@@ -22,10 +22,12 @@ module Ctrl_MEM(
     input wire [2:0] load_type_EX,
     input wire reg_write_en_EX,
     input wire [3:0] cache_write_en_EX,
+    input wire cache_read_en_EX,
     output reg wb_select_MEM,
     output reg [2:0] load_type_MEM,
     output reg reg_write_en_MEM,
-    output reg [3:0] cache_write_en_MEM
+    output reg [3:0] cache_write_en_MEM,
+    output reg cache_read_en_MEM
     );
 
     initial 
@@ -34,6 +36,7 @@ module Ctrl_MEM(
         load_type_MEM = 2'h0;
         reg_write_en_MEM = 0;
         cache_write_en_MEM = 3'h0;
+        cache_read_en_MEM = 1'b0;
     end
     
     always@(posedge clk)
@@ -45,6 +48,7 @@ module Ctrl_MEM(
                 load_type_MEM <= 2'h0;
                 reg_write_en_MEM <= 0;
                 cache_write_en_MEM <= 3'h0;
+                cache_read_en_MEM <= 1'b0;
             end
             else
             begin
@@ -52,6 +56,7 @@ module Ctrl_MEM(
                 load_type_MEM <= load_type_EX;
                 reg_write_en_MEM <= reg_write_en_EX;
                 cache_write_en_MEM <= cache_write_en_EX;
+                cache_read_en_MEM <= cache_read_en_EX;
             end
         end
     

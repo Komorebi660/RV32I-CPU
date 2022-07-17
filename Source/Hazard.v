@@ -10,12 +10,13 @@
     // reg_dstE          EX阶段的目的reg地址
     // reg_dstM          MEM阶段的目的reg地址
     // reg_dstW          WB阶段的目的reg地址
-    // br                是否branch
+    // br                branch分支预测错误, 需要更新PC
     // jalr              是否jalr
     // jal               是否jal
     // wb_select         来自EX段的写回寄存器的值的来源（Cache内容或者ALU计算结果）
     // reg_write_en_MEM  MEM阶段的寄存器写使能信号
     // reg_write_en_WB   WB阶段的寄存器写使能信号
+    // miss              Cache miss
 // 输出
     // flushF            IF阶段的flush信号
     // bubbleF           IF阶段的bubble信号
@@ -29,11 +30,12 @@
     // bubbleW           WB阶段的bubble信号
     // op1_sel           00 is reg1, 01 is mem stage forwarding, 01 is wb stage forwarding
     // op2_sel           00 is reg2, 01 is mem stage forwarding, 01 is wb stage forwarding
-    
+
 
 `include "Parameters.v"   
 module HarzardUnit(
     input wire rst,
+    input wire miss,
     input wire [4:0] reg1_srcD, reg2_srcD, reg1_srcE, reg2_srcE, reg_dstE, reg_dstM, reg_dstW,
     input wire br, jalr, jal,
     input wire wb_select,
@@ -95,6 +97,12 @@ module HarzardUnit(
             bubbleF = 1;
             flushF = 0;
         end
+        //cache miss
+        else if(miss)
+        begin
+            bubbleF = 1;
+            flushF = 0;
+        end
         else 
         begin
             bubbleF = 0;
@@ -116,12 +124,20 @@ module HarzardUnit(
             bubbleD = 1;
             flushD = 0;
         end
+        //cache miss
+        else if(miss)
+        begin
+            bubbleD = 1;
+            flushD = 0;
+        end
+        //jalr or br
         else if (jalr || br)
         begin
             bubbleD = 0;
             flushD = 1;
         end
-        else if (jal)
+        //jal
+        else if(jal)
         begin
             bubbleD = 0;
             flushD = 1;
@@ -147,6 +163,13 @@ module HarzardUnit(
             bubbleE = 0;
             flushE = 1;
         end
+        //cache miss
+        else if(miss)
+        begin
+            bubbleE = 1;
+            flushE = 0;
+        end
+        //jalr or br
         else if (jalr || br)
         begin
             bubbleE = 0;
@@ -167,6 +190,12 @@ module HarzardUnit(
             bubbleM = 0;
             flushM = 1;
         end
+        //cache miss
+        else if(miss)
+        begin
+            bubbleM = 1;
+            flushM = 0;
+        end
         else 
         begin
             bubbleM = 0;
@@ -181,6 +210,12 @@ module HarzardUnit(
         begin
             bubbleW = 0;
             flushW = 1;
+        end
+        //cache miss
+        else if(miss)
+        begin
+            bubbleW = 1;
+            flushW = 0;
         end
         else 
         begin

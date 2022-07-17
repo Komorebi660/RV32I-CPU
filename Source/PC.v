@@ -20,10 +20,13 @@ module PC_IF(
         if (!bubbleF) 
         begin
             if (flushF)
+            begin
                 PC <= 0;
+            end
             else 
+            begin
                 PC <= NPC;
+            end
         end
-    
 
 endmodule

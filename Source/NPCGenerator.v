@@ -3,7 +3,7 @@
     //  根据跳转信号，决定执行的下一条指令地址
     //  debug端口用于simulation时批量写入数据，可以忽略
 // 输入
-    // PC                指令地址（PC + 4, 而非PC）
+    // predict_target    分支预测的PC
     // jal_target        jal跳转地址
     // jalr_target       jalr跳转地址
     // br_target         br跳转地址
@@ -15,21 +15,21 @@
 
 
 module NPC_Generator(
-    input wire [31:0] PC, jal_target, jalr_target, br_target,
+    input wire [31:0] predict_target, jal_target, jalr_target, br_target,
     input wire jal, jalr, br,
     output reg [31:0] NPC
     );
 
     always @(*)
     begin
-        if(jalr)
-            NPC = jalr_target;
-        else if(br)
+        if(br)  // 分支预测错误时的跳转目标
             NPC = br_target;
+        else if(jalr)
+            NPC = jalr_target;
         else if(jal)
             NPC = jal_target;
-        else
-            NPC = PC + 4;
+        else    // 分支预测结果
+            NPC = predict_target;
     end
 
 endmodule

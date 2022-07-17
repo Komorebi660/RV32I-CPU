@@ -13,39 +13,74 @@
 module BranchDecision(
     input wire [31:0] reg1, reg2,
     input wire [2:0] br_type,
-    output reg br
+    input wire predict_taken,
+    input wire [31:0] br_target, current_pc,
+    output reg [31:0] target,
+    output reg taken, predict_wrong, is_branch
     );
 
     always @ (*)
     begin
         case(br_type)
-            `NOBRANCH: br = 0;
-            `BEQ:  br = (reg1 == reg2) ? 1 : 0;
-            `BNE:  br = (reg1 == reg2) ? 0 : 1;
-            `BLTU: br = (reg1 <  reg2) ? 1 : 0;
-            `BGEU: br = (reg1 >= reg2) ? 1 : 0;
+            `NOBRANCH: begin 
+                taken = 0;
+                is_branch = 0;
+            end
+            `BEQ:  begin
+                taken = (reg1 == reg2) ? 1 : 0;
+                is_branch = 1;
+            end
+            `BNE:  begin
+                taken = (reg1 == reg2) ? 0 : 1;
+                is_branch = 1;
+            end
+            `BLTU: begin
+                taken = (reg1 <  reg2) ? 1 : 0;
+                is_branch = 1;
+            end
+            `BGEU: begin
+                taken = (reg1 >= reg2) ? 1 : 0;
+                is_branch = 1;
+            end
             `BLT:  begin
                 if (reg1[31]==0 && reg2[31]==1)
-                    br = 0;
+                    taken = 0;
                 else if (reg1[31]==1 && reg2[31]==0)
-                    br = 1;
+                    taken = 1;
                 else if (reg1[31]==1 && reg2[31]==1)
-                    br = (reg1 < reg2) ? 1 : 0;
+                    taken = (reg1 < reg2) ? 1 : 0;
                 else
-                    br = (reg1 < reg2) ? 1 : 0;
+                    taken = (reg1 < reg2) ? 1 : 0;
+                
+                is_branch = 1;
             end
             `BGE:  begin
                 if (reg1[31]==0 && reg2[31]==1)
-                    br = 1;
+                    taken = 1;
                 else if (reg1[31]==1 && reg2[31]==0)
-                    br = 0;
+                    taken = 0;
                 else if (reg1[31]==1 && reg2[31]==1)
-                    br = (reg1 >= reg2) ? 1 : 0;
+                    taken = (reg1 >= reg2) ? 1 : 0;
                 else
-                    br = (reg1 >= reg2) ? 1 : 0;
+                    taken = (reg1 >= reg2) ? 1 : 0;
+                
+                is_branch = 1;
             end
-            default: br = 0;
+            default: begin
+                taken = 0;
+                is_branch = 0;
+            end
         endcase
+
+        predict_wrong = taken ^ predict_taken;   //分支预测错误, 需要更新
+
+        //若实际跳转, 则更新的分支目标是前面实际计算得到的target
+        if (taken)
+            target = br_target;
+        //否则, 分支目标是pc+4 (顺序执行)
+        else 
+            target = current_pc + 4;
     end
+
 
 endmodule

@@ -1,7 +1,4 @@
 
-2testAll.om:     file format elf32-littleriscv
-
-
 Disassembly of section .text:
 
 00010080 <_start>:

@@ -1,7 +1,4 @@
 
-csrtest.om:     file format elf32-littleriscv
-
-
 Disassembly of section .text:
 
 00010054 <test_0>:

@@ -15,9 +15,11 @@
     // load_type         load类型
     // reg_write_en      通用寄存器写使能，reg_write_en == 1表示需要写回reg
     // cache_write_en    按字节写入data cache
+    // cache_read_en     cache读使能
     // imm_type          指令中立即数类型
     // CSR_write_en      是否需要写CSR寄存器
     // CSR_zimm_or_reg   CSR指令的操作数类型, 为0时选择reg, 否则选择zimm
+
 
 
 `include "Parameters.v"   
@@ -33,6 +35,7 @@ module ControllerDecoder(
     output reg [2:0] load_type,
     output reg reg_write_en,
     output reg [3:0] cache_write_en,
+    output reg cache_read_en,
     output reg [2:0] imm_type,
     // CSR signals
     output reg CSR_write_en,
@@ -61,6 +64,7 @@ module ControllerDecoder(
             load_type = 0;
             reg_write_en = 1;
             cache_write_en = 0;
+            cache_read_en = 0;
             imm_type = `UTYPE;
             CSR_write_en = 0;
             CSR_zimm_or_reg = 0;
@@ -78,6 +82,7 @@ module ControllerDecoder(
             load_type = 0;
             reg_write_en = 1;
             cache_write_en = 0;
+            cache_read_en = 0;
             imm_type = `UTYPE;
             CSR_write_en = 0;
             CSR_zimm_or_reg = 0;
@@ -95,6 +100,7 @@ module ControllerDecoder(
             load_type = 0;
             reg_write_en = 1;
             cache_write_en = 0;
+            cache_read_en = 0;
             imm_type = `JTYPE;
             CSR_write_en = 0;
             CSR_zimm_or_reg = 0;
@@ -112,6 +118,7 @@ module ControllerDecoder(
             load_type = 0;
             reg_write_en = 1;
             cache_write_en = 0;
+            cache_read_en = 0;
             imm_type = `ITYPE;
             CSR_write_en = 0;
             CSR_zimm_or_reg = 0;
@@ -128,6 +135,7 @@ module ControllerDecoder(
             load_type = 0;
             reg_write_en = 0;
             cache_write_en = 0;
+            cache_read_en = 0;
             imm_type = `BTYPE;
             CSR_write_en = 0;
             CSR_zimm_or_reg = 0;
@@ -154,6 +162,7 @@ module ControllerDecoder(
             wb_select = 1;
             reg_write_en = 1;
             cache_write_en = 0;
+            cache_read_en = 1;
             imm_type = `ITYPE;
             CSR_write_en = 0;
             CSR_zimm_or_reg = 0;
@@ -182,6 +191,7 @@ module ControllerDecoder(
             load_type = 0;
             reg_write_en = 1;
             cache_write_en = 0;
+            cache_read_en = 0;
             imm_type = `ITYPE;
             CSR_write_en = 0;
             CSR_zimm_or_reg = 0;
@@ -216,6 +226,7 @@ module ControllerDecoder(
             wb_select = 0;
             load_type = 0;
             reg_write_en = 0;
+            cache_read_en = 0;
             imm_type = `STYPE;
             CSR_write_en = 0;
             CSR_zimm_or_reg = 0;
@@ -239,6 +250,7 @@ module ControllerDecoder(
             load_type = 0;
             reg_write_en = 1;
             cache_write_en = 0;
+            cache_read_en = 0;
             imm_type = `RTYPE;
             CSR_write_en = 0;
             CSR_zimm_or_reg = 0;
@@ -279,6 +291,7 @@ module ControllerDecoder(
             load_type = 0;
             reg_write_en = 1;
             cache_write_en = 0;
+            cache_read_en = 0;
             imm_type = 0;
             CSR_write_en = 1;
 
@@ -327,6 +340,7 @@ module ControllerDecoder(
             load_type = 0;
             reg_write_en = 0;
             cache_write_en = 0;
+            cache_read_en = 0;
             imm_type = 0;
             CSR_write_en = 0;
             CSR_zimm_or_reg = 0;

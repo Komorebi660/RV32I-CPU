@@ -1,88 +1,54 @@
-# 概述：对数组进行原地快速排序
-# 
-# 系统要求：1、具有一个大小至少为0x400 Byte的数据RAM （该程序中, 其高地址用作栈, 低地址用作被排序的数组）
-#           2、测试该代码时, 不需要初始化DataRam, 只需要将指令流烧入InstrRam。因为有一系列指令去准备被排序的数组。
-#           3、请根据实际情况将a0设置为你的DataRam的地址, 例如该系统中DataRam起始地址为0x00000000, 则第一条指令就是 lui a0, 0x00000
+# 对数组进行原地快速排序
 #
-
+# QuickSort函数的等效C代码:
+#   void QuickSort(int *lst, int start, int end){
+#       if(end>start){
+#           int i = start,j = end,key = lst[start];
+#           while(i < j){
+#               for (;i < j && key <= lst[j];j--);
+#               lst[i] = lst[j];
+#               for (;i < j && key >= lst[i];i++);
+#               lst[j] = lst[i];
+#           }
+#           lst[i] = key;
+#           QuickSort(lst, start, i - 1);
+#           QuickSort(lst, i + 1, end);
+#       }
+#   }
+#
+#
+        
 
 .org 0x0
     .global _start
 _start:
 
-main:                        # main函数开始, 在DataRam里初始化一段数据, 然后调用QuickSort进行排序, 排序后进入死循环。请使用仿真或UART调试器查看排序后的数据
-    lui    a0, 0x00000       # 设置DataRam的起始地址为0x00000000, 也用作被排序数组的起始地址, 即DataRam的起始地址
-    addi   sp, a0  , 0x400   # 设置栈顶指针
-
-    or     a2, a0, zero
+main:
+    xor    a3, zero, 0x100     # 指定排序问题的规模。0x100则代表要给0x100=256个数字进行快速排序。
     
-    addi   t0, zero, -3      # 用一系列指令向a0里写入被排序的数组, 可以是负数
-    sw     t0,  (a2)
-    addi   a2, a2, 4
-    addi   t0, zero, -7
-    sw     t0,  (a2)
-    addi   a2, a2, 4
-    addi   t0, zero, 6
-    sw     t0,  (a2)
-    addi   a2, a2, 4
-    addi   t0, zero, 5
-    sw     t0,  (a2)
-    addi   a2, a2, 4
-    addi   t0, zero, -2
-    sw     t0,  (a2)
-    addi   a2, a2, 4
-    addi   t0, zero, 2
-    sw     t0,  (a2)
-    addi   a2, a2, 4
-    addi   t0, zero, -9
-    sw     t0,  (a2)
-    addi   a2, a2, 4
-    addi   t0, zero, -4
-    sw     t0,  (a2)
-    addi   a2, a2, 4
-    addi   t0, zero, -6
-    sw     t0,  (a2)
-    addi   a2, a2, 4
-    addi   t0, zero, 8
-    sw     t0,  (a2)
-    addi   a2, a2, 4
-    addi   t0, zero, 1
-    sw     t0,  (a2)
-    addi   a2, a2, 4
-    addi   t0, zero, -5
-    sw     t0,  (a2)
-    addi   a2, a2, 4
-    addi   t0, zero, 7
-    sw     t0,  (a2)
-    addi   a2, a2, 4
-    addi   t0, zero, 0
-    sw     t0,  (a2)
-    addi   a2, a2, 4
-    addi   t0, zero, 3
-    sw     t0,  (a2)
-    addi   a2, a2, 4
-    addi   t0, zero, -1
-    sw     t0,  (a2)
-    addi   a2, a2, 4
-    addi   t0, zero, 4
-    sw     t0,  (a2)
-    addi   a2, a2, 4
-    addi   t0, zero, 9
-    sw     t0,  (a2)
-    addi   a2, a2, 4
-    addi   t0, zero, -8
-    sw     t0,  (a2)
+    lui    sp, 0x00001         # 设置栈顶指针 sp=0x1000 
     
-
-    or     a1, zero, zero      # 准备函数参数, a1=0
-    sub    a2, a2, a0          # 准备函数参数, a2=数组最后一个元素的地址偏移
+    xor    a0, zero, zero      # 准备函数参数, a0=0, 说明要排序的数组的RAM起始地址为0
+    xor    a1, zero, zero      # 准备函数参数, a1=0, 说明从第0个字开始排序
+    addi   a2, a3  , -1
+    slli   a2, a2  , 2         # 准备函数参数, a2=数组最后一个元素的地址偏移。我们要排0x100=1024个数, 最后一个数的地址为0x3fc
+    
     jal    ra  , QuickSort     # 开始排序
+
+    addi   t0, a3, 0
+    addi   t1, a0, 0
+    slli   t0, t0, 2
+    slli   t1, t1, 2
+Loop:
+    lw     t2, (t1)
+    addi   t1, t1, 4
+    blt    t1, t0, Loop
 infinity_loop:
     jal   zero, infinity_loop  # 排序结束, 死循环
 
 QuickSort:
     # 函数:QuickSort：以a0为基地址的原地升序快速排序, a1是start即开始下标, a2是end即结束下标
-    # 例:  a0=0x00000100, a1=0, a2=32, 则计算从0x00000100开始的32个4Byte数的快速排序
+    # 例:  a0=0x00000100, a1=0, a2=31*4, 则计算从0x00000100开始的32个字的快速排序
     # 注:  以有符号数为比较标准。例如0xffffffff应该排在0x00000001前面, 因为0xffffffff代表-1, 比1要小
     # 之所以使用低13位, 因为13位二进制数取值范围位0~8191, 不会超过4位十进制数
     # 改变数据RAM： 除了被排序的数组外, 还使用了以sp寄存器为栈顶指针的栈。使用栈的大小根据排序长度而不同, 调用前合理设置sp的值以防爆栈
@@ -157,25 +123,4 @@ QuickSort:
     QuickSortReturn:                                   # 函数结尾
         jalr   zero, ra, 0                             # 返回
 
-        
-
-
-#
-# QuickSort函数的等效C代码:
-#   void QuickSort(int *lst, int start, int end){
-#       if(end>start){
-#           int i = start,j = end,key = lst[start];
-#           while(i < j){
-#               for (;i < j && key <= lst[j];j--);
-#               lst[i] = lst[j];
-#               for (;i < j && key >= lst[i];i++);
-#               lst[j] = lst[i];
-#           }
-#           lst[i] = key;
-#           QuickSort(lst, start, i - 1);
-#           QuickSort(lst, i + 1, end);
-#       }
-#   }
-#
-#
         

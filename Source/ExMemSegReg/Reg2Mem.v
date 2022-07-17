@@ -7,7 +7,7 @@
     // bubbleM           MEM阶段的bubble信号
     // flushM            MEM阶段的flush信号
 // 输出
-    // reg2_MEM           传给下一流水段的寄存器2内容
+    // reg2_MEM          传给下一流水段的寄存器2内容
 
 
 module Reg2_MEM(
