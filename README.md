@@ -68,4 +68,4 @@ CSRRW、CSRRS、CSRRC、CSRRWI、CSRRSI、CSRRCI
 
 ## 仿真
 
-首先需要生成`I-Cache`和`D-cache`文件, 详情见[测试样例生成](./TestTools/README.md)。接下来以`Vivado`开发为例, 首先新建工程, 将[Source](./Source)的代码导入, 然后将Simulation文件夹下的[testBench.v](./Simulation/testBench.v)作为仿真文件导入, 之后就可以直接进行仿真了。
+以`Vivado`开发为例, 首先需要生成`I-Cache`和`D-cache`文件, 详情见[测试样例生成](./TestTools/README.md)。接下来新建`Vivado`工程, 将[Source](./Source)的代码导入, 然后将Simulation文件夹下的[testbench.v](./Simulation/testbench.v)作为仿真文件导入, 之后就可以进行仿真了。我们可以通过调节Cache的配置、分支预测器的大小、测试样例的规模来分析CPU的性能。
