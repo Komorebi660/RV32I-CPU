@@ -36,36 +36,54 @@
 
 ## CPU基本情况
 
-本仓库实现了一个基于`RISC-V 32I`指令集的五段流水线`CPU`, 支持的指令有:
+### ISA支持
 
-```
-SLLI、SRLI、SRAI、ADD、SUB、SLL、SLT、SLTU、XOR、SRL、SRA、OR、AND、ADDI、SLTI、SLTIU、XORI、ORI、ANDI、
-
-LUI、AUIPC、JALR、JAL、
-
-LB、LH、LW、LBU、LHU、
-
-SB、SH、SW、
-
-BEQ、BNE、BLT、BLTU、BGE、BGEU、
-
-CSRRW、CSRRS、CSRRC、CSRRWI、CSRRSI、CSRRCI
-```
-
-`RISC-V 32I`的指令类型定义如下:
+`RISC-V 32I`的指令类型共有6种, 每种指令的具体位划分如下:
 
 <div align=center>
 <img src="./Figures/instruction_type.png" width=80%/>
 </div>
 </br>
 
-`CPU`的[数据通路](./Figures/Design-Figure.png)如下:
+本CPU支持的指令有:
+
+```
+#逻辑或算数运算指令
+SLLI、SRLI、SRAI、ADD、SUB、SLL、SLT、SLTU、XOR、SRL、SRA、OR、AND、ADDI、SLTI、SLTIU、XORI、ORI、ANDI、
+
+#load与store类型的指令
+LB、LH、LW、LBU、LHU、SB、SH、SW、
+
+#分支指令
+BEQ、BNE、BLT、BLTU、BGE、BGEU、
+
+#跳转或寄存器更新指令
+LUI、AUIPC、JALR、JAL、
+
+#CSR指令
+CSRRW、CSRRS、CSRRC、CSRRWI、CSRRSI、CSRRCI
+```
+
+
+
+### 功能特性
+
+此CPU的功能特性包括:
+
+- 五段流水线, 带有定向旁路;
+- 支持`2bits BHT`分支预测, 并可自由调整`buffer`大小;
+- 支持`LRU` `n-way` `D-Cache`, 并可自由调整D-Cache配置。在`D-Cache`之后接有`main_mem`, 负责模拟主存50个时钟周期的延迟。
+  
+其[数据通路](./Figures/Design-Figure.png)如下:
 
 <div align=center>
 <img src="./Figures/Design-Figure.png" width=100%/>
 </div>
 </br>
 
-## 仿真
 
-以`Vivado`开发为例, 首先需要生成`I-Cache`和`D-cache`文件, 详情见[测试样例生成](./TestTools/README.md)。接下来新建`Vivado`工程, 将[Source](./Source)的代码导入, 然后将Simulation文件夹下的[testbench.v](./Simulation/testbench.v)作为仿真文件导入, 之后就可以进行仿真了。我们可以通过调节Cache的配置、分支预测器的大小、测试样例的规模来分析CPU的性能。
+## Getting Started
+
+以`Vivado`开发为例, 首先需要生成`I-Cache`和`D-cache`的`Verilog`文件, 详情见[测试样例生成](./TestTools/README.md)。接下来新建`Vivado`工程, 将[Source](./Source)的代码导入, 然后将Simulation文件夹下的[testBench.v](./Simulation/testBench.v)作为仿真文件导入, 之后就可以进行仿真了。功能和性能测试结果说明也请参考[此文档](./TestTools/README.md)。
+
+另外, 我们可以通过调节Cache的配置、分支预测器的大小、测试样例的规模来分析CPU在不同配置下的性能。
