@@ -64,8 +64,6 @@ LUI、AUIPC、JALR、JAL、
 CSRRW、CSRRS、CSRRC、CSRRWI、CSRRSI、CSRRCI
 ```
 
-
-
 ### 功能特性
 
 此CPU的功能特性包括:
@@ -81,9 +79,8 @@ CSRRW、CSRRS、CSRRC、CSRRWI、CSRRSI、CSRRCI
 </div>
 </br>
 
-
 ## Getting Started
 
-以`Vivado`开发为例, 首先需要生成`I-Cache`和`D-cache`的`Verilog`文件, 详情见[测试样例生成](./TestTools/README.md)。接下来新建`Vivado`工程, 将[Source](./Source)的代码导入, 然后将Simulation文件夹下的[testBench.v](./Simulation/testBench.v)作为仿真文件导入, 之后就可以进行仿真了。功能和性能测试结果说明也请参考[此文档](./TestTools/README.md)。
+以`Vivado`开发为例, 首先需要生成`I-Cache`和`D-cache`的`Verilog`文件(*默认的`Cache`文件为`1TestAll`对应的`Verilog`文件*), 详情见[测试样例生成](./TestTools/README.md)。接下来新建`Vivado`工程, 将[Source](./Source)的代码导入, 然后将Simulation文件夹下的[testBench.v](./Simulation/testBench.v)作为仿真文件导入, 之后就可以进行仿真了。功能和性能测试结果说明也请参考[此文档](./TestTools/README.md)。
 
 另外, 我们可以通过调节Cache的配置、分支预测器的大小、测试样例的规模来分析CPU在不同配置下的性能。
